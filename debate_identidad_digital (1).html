@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Debate · Identidad Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --purple-50: #EEEDFE; --purple-100: #CECBF6; --purple-400: #7F77DD;
+    --purple-600: #534AB7; --purple-800: #3C3489; --purple-900: #26215C;
+    --teal-50: #E1F5EE; --teal-400: #1D9E75; --teal-600: #0F6E56; --teal-800: #085041;
+    --coral-50: #FAECE7; --coral-400: #D85A30; --coral-600: #993C1D;
+    --pink-50: #FBEAF0; --pink-600: #993556;
+    --amber-50: #FAEEDA; --amber-600: #854F0B;
+    --red-50: #FCEBEB; --red-400: #E24B4A; --red-600: #A32D2D;
+    --green-50: #EAF3DE; --green-600: #3B6D11;
+    --gray-50: #F8F7F4; --gray-100: #F1EFE8; --gray-200: #D3D1C7;
+    --gray-500: #888780; --gray-700: #5F5E5A; --gray-900: #2C2C2A;
+    --bg: #F4F3F0;
+    --card: #FFFFFF;
+    --text: #1a1a1a;
+    --text-muted: #6b6b68;
+    --border: rgba(0,0,0,0.08);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-pill: 100px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 520px;
+  }
+
+  /* Header */
+  .app-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .app-header .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--purple-600);
+    margin-bottom: 6px;
+  }
+  .app-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gray-900);
+    line-height: 1.3;
+  }
+  .app-header p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* Step bar */
+  .step-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 2rem;
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 6px;
+    border: 1px solid var(--border);
+  }
+  .step-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 9px 6px;
+    border-radius: 11px;
+    cursor: default;
+    transition: background 0.25s;
+  }
+  .step-item.active {
+    background: var(--purple-800);
+  }
+  .step-item.done {
+    background: var(--teal-50);
+  }
+  .step-num {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .step-item.done .step-num {
+    background: var(--teal-400);
+    color: #fff;
+  }
+  .step-item:not(.active):not(.done) .step-num {
+    background: var(--gray-200);
+    color: var(--gray-700);
+  }
+  .step-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--purple-100);
+    white-space: nowrap;
+  }
+  .step-item.done .step-label { color: var(--teal-600); }
+  .step-item:not(.active):not(.done) .step-label { color: var(--gray-500); }
+
+  /* Screens */
+  .screen { display: none; }
+  .screen.visible { display: block; animation: fadeUp 0.35s ease; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Screen header */
+  .screen-heading {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 4px;
+  }
+  .screen-sub {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    line-height: 1.5;
+  }
+
+  /* Card */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+
+  /* Profile Card */
+  .profile-cover {
+    height: 90px;
+    background: var(--purple-800);
+    position: relative;
+  }
+  .profile-cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 20px,
+      rgba(255,255,255,0.03) 20px,
+      rgba(255,255,255,0.03) 40px
+    );
+  }
+  .profile-body { padding: 0 18px 18px; }
+  .avatar-wrap { margin-top: -26px; margin-bottom: 10px; }
+  .avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--purple-100);
+    border: 3px solid var(--card);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; font-weight: 700; color: var(--purple-800);
+  }
+  .profile-name { font-size: 16px; font-weight: 700; color: var(--gray-900); }
+  .profile-bio { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+  .profile-stats {
+    display: flex; gap: 20px; margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .stat-n { font-size: 15px; font-weight: 700; color: var(--gray-900); }
+  .stat-l { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+
+  /* Photo grid */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    margin-top: 3px;
+  }
+  .photo {
+    aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    border-radius: 4px;
+  }
+
+  /* Section label */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 1.25rem 0 8px;
+  }
+
+  /* Post */
+  .post {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin-bottom: 8px;
+  }
+  .post-top {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+  }
+  .mini-avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--purple-100);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--purple-800);
+    flex-shrink: 0;
+  }
+  .post-name { font-size: 13px; font-weight: 600; color: var(--gray-900); }
+  .post-time { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+  .post-text { font-size: 13px; color: var(--gray-900); line-height: 1.6; }
+  .tag {
+    display: inline-flex; align-items: center;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    font-size: 10px; font-weight: 600;
+    margin-top: 8px;
+    letter-spacing: 0.02em;
+  }
+  .tag-controversial { background: var(--coral-50); color: var(--coral-600); }
+  .tag-old { background: var(--amber-50); color: var(--amber-600); }
+  .tag-sarcasm { background: var(--pink-50); color: var(--pink-600); }
+  .tag-positive { background: var(--green-50); color: var(--green-600); }
+  .post-footer {
+    display: flex; gap: 14px; margin-top: 10px;
+    padding-top: 10px; border-top: 1px solid var(--border);
+  }
+  .post-footer span { font-size: 12px; color: var(--text-muted); }
+
+  /* Buttons */
+  .btn {
+    width: 100%;
+    padding: 13px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    background: var(--card);
+    cursor: pointer;
+    font-size: 14px; font-weight: 600;
+    color: var(--gray-900);
+    transition: all 0.18s;
+    font-family: 'Inter', sans-serif;
+    margin-top: 8px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .btn:hover { background: var(--gray-100); transform: translateY(-1px); }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary {
+    background: var(--purple-800);
+    border-color: var(--purple-800);
+    color: var(--purple-50);
+  }
+  .btn-primary:hover { background: var(--purple-600); border-color: var(--purple-600); }
+  .btn-ghost { border-color: var(--gray-200); color: var(--text-muted); }
+
+  /* Timer */
+  .timer-wrap {
+    background: var(--gray-100);
+    border-radius: 100px;
+    height: 6px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .timer-fill {
+    height: 100%;
+    background: var(--red-400);
+    border-radius: 100px;
+    transition: width 1s linear;
+  }
+  .timer-label {
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  /* Verdict */
+  .verdict-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .verdict-btn {
+    padding: 20px 10px;
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    background: var(--card);
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.18s;
+  }
+  .verdict-btn .v-icon { font-size: 26px; margin-bottom: 6px; }
+  .verdict-btn .v-text { font-size: 13px; font-weight: 600; color: var(--gray-900); }
+  .verdict-btn .v-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .verdict-btn:hover { background: var(--gray-50); transform: translateY(-2px); }
+  .verdict-btn.sel-yes { border-color: var(--teal-400); background: var(--teal-50); }
+  .verdict-btn.sel-yes .v-text { color: var(--teal-600); }
+  .verdict-btn.sel-no  { border-color: var(--red-400); background: var(--red-50); }
+  .verdict-btn.sel-no  .v-text { color: var(--red-600); }
+
+  textarea {
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    padding: 12px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    color: var(--text);
+    resize: none;
+    outline: none;
+    line-height: 1.6;
+  }
+  textarea:focus { border-color: var(--purple-400); }
+
+  /* Reveal */
+  .reveal-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+  .reveal-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red-400);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 12px 14px;
+  }
+  .reveal-item .ri-title {
+    font-size: 13px; font-weight: 600; color: var(--red-600); margin-bottom: 4px;
+  }
+  .reveal-item .ri-body {
+    font-size: 13px; color: var(--text-muted); line-height: 1.6;
+  }
+
+  .reveal-hero {
+    background: var(--purple-900);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .reveal-hero .rh-label {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--purple-100); margin-bottom: 6px;
+  }
+  .reveal-hero .rh-body {
+    font-size: 14px; color: var(--purple-50); line-height: 1.6;
+  }
+
+  /* Debate */
+  .debate-q-card {
+    background: var(--purple-900);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 12px;
+  }
+  .debate-q-card .dq-eyebrow {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--purple-400); margin-bottom: 8px;
+  }
+  .debate-q-card .dq-text {
+    font-size: 16px; font-weight: 600; color: var(--purple-50); line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .debate-q-card .dq-bomb {
+    font-size: 13px; color: var(--purple-100); line-height: 1.6;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .debate-q-card .dq-bomb strong { color: #fff; font-weight: 600; }
+
+  .sides-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .side-card { border-radius: var(--radius); padding: 14px; border: 1px solid; }
+  .side-card.favor { background: var(--teal-50); border-color: rgba(29,158,117,0.2); }
+  .side-card.contra { background: var(--red-50); border-color: rgba(226,75,74,0.2); }
+  .side-card .side-title {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; margin-bottom: 10px;
+  }
+  .side-card.favor .side-title { color: var(--teal-600); }
+  .side-card.contra .side-title { color: var(--red-600); }
+  .side-card ul { padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .side-card ul li {
+    font-size: 12px; line-height: 1.5;
+    display: flex; gap: 6px;
+  }
+  .side-card.favor li { color: var(--teal-800); }
+  .side-card.contra li { color: var(--red-600); }
+  .side-card li::before { content: '·'; font-weight: 700; flex-shrink: 0; }
+
+  /* Badge */
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    font-size: 11px; font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: 0.03em;
+  }
+  .badge-step { background: var(--purple-50); color: var(--purple-800); }
+  .badge-live { background: var(--red-50); color: var(--red-600); }
+  .badge-live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--red-400); animation: pulse 1.2s infinite; }
+  .badge-giro { background: var(--amber-50); color: var(--amber-600); }
+  .badge-debate { background: var(--teal-50); color: var(--teal-600); }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; } 50% { opacity: 0.3; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="app-header">
+    <div class="eyebrow">Dinámica de debate</div>
+    <h1>¿Te están juzgando… sin conocerte?</h1>
+    <p>Identidad digital, redes sociales y autenticidad</p>
+  </div>
+
+  <div class="step-bar" id="stepBar">
+    <div class="step-item active" id="dot0">
+      <div class="step-num">1</div>
+      <span class="step-label">El perfil</span>
+    </div>
+    <div class="step-item" id="dot1">
+      <div class="step-num">2</div>
+      <span class="step-label">Juicio</span>
+    </div>
+    <div class="step-item" id="dot2">
+      <div class="step-num">3</div>
+      <span class="step-label">El giro</span>
+    </div>
+    <div class="step-item" id="dot3">
+      <div class="step-num">4</div>
+      <span class="step-label">Debate</span>
+    </div>
+  </div>
+
+  <!-- PASO 1 -->
+  <div class="screen visible" id="s0">
+    <span class="badge badge-step">Paso 1 · El impacto</span>
+    <p class="screen-heading">Conoce a Valentina</p>
+    <p class="screen-sub">Observa su perfil detenidamente. Tienes 30 segundos.</p>
+
+    <div class="card">
+      <div class="profile-cover"></div>
+      <div class="profile-body">
+        <div class="avatar-wrap">
+          <div class="avatar">VR</div>
+        </div>
+        <div class="profile-name">Valentina Ríos</div>
+        <div class="profile-bio">estudiante de derecho · vivir es el único plan</div>
+        <div class="profile-stats">
+          <div><div class="stat-n">847</div><div class="stat-l">publicaciones</div></div>
+          <div><div class="stat-n">2.3k</div><div class="stat-l">seguidores</div></div>
+          <div><div class="stat-n">198</div><div class="stat-l">siguiendo</div></div>
+        </div>
+      </div>
+      <div class="photo-grid">
+        <div class="photo" style="background:#EEEDFE;">📚</div>
+        <div class="photo" style="background:#E1F5EE;">🥳</div>
+        <div class="photo" style="background:#FAECE7;">🍹</div>
+        <div class="photo" style="background:#EAF3DE;">🏆</div>
+        <div class="photo" style="background:#FAEEDA;">😴</div>
+        <div class="photo" style="background:#FBEAF0;">✈️</div>
+      </div>
+    </div>
+
+    <p class="section-label">Publicaciones recientes</p>
+
+    <div class="post">
+      <div class="post-top">
+        <div class="mini-avatar">VR</div>
+        <div><div class="post-name">Valentina Ríos</div><div class="post-time">hace 2 días</div></div>
+      </div>
+      <div class="post-text">"La gente que llega tarde siempre tiene excusas. Sin respeto no hay conversación."</div>
+      <span class="tag tag-controversial">polémico</span>
+      <div class="post-footer"><span>128 likes</span><span>34 comentarios</span></div>
+    </div>
+
+    <div class="post">
+      <div class="post-top">
+        <div class="mini-avatar">VR</div>
+        <div><div class="post-name">Valentina Ríos</div><div class="post-time">hace 1 semana</div></div>
+      </div>
+      <div class="post-text">"No me importa lo que piensen mientras yo sepa lo que valgo 🙃"</div>
+      <span class="tag tag-sarcasm">sarcasmo / tono ambiguo</span>
+      <div class="post-footer"><span>310 likes</span><span>12 comentarios</span></div>
+    </div>
+
+    <div class="post">
+      <div class="post-top">
+        <div class="mini-avatar">VR</div>
+        <div><div class="post-name">Valentina Ríos</div><div class="post-time">hace 3 años</div></div>
+      </div>
+      <div class="post-text">"Francamente no entiendo a la gente que llora por política. Maduren."</div>
+      <span class="tag tag-old">hace 3 años</span>
+      <div class="post-footer"><span>47 likes</span><span>89 comentarios</span></div>
+    </div>
+
+    <div class="post">
+      <div class="post-top">
+        <div class="mini-avatar">VR</div>
+        <div><div class="post-name">Valentina Ríos</div><div class="post-time">hace 3 semanas</div></div>
+      </div>
+      <div class="post-text">"Ganamos el concurso de moot court. Gracias a mi equipo, los mejores. No lo habría logrado sola."</div>
+      <span class="tag tag-positive">positivo</span>
+      <div class="post-footer"><span>502 likes</span><span>67 comentarios</span></div>
+    </div>
+
+    <p class="section-label">Likes a contenido</p>
+    <div class="post">
+      <div class="post-text" style="color:var(--text-muted);">
+        Le dio like a: <strong style="color:var(--gray-900)">"Los débiles piden perdón, los fuertes siguen adelante"</strong> · <strong style="color:var(--gray-900)">"El liderazgo no es para todos"</strong> · "Debate: ¿subir impuestos a universidades privadas?" · "Técnicas para hablar en público sin miedo"
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="goTo(1)" style="margin-top:16px;">Ya lo vi — continuar →</button>
+  </div>
+
+  <!-- PASO 2 -->
+  <div class="screen" id="s1">
+    <span class="badge badge-live">En vivo · Juicio rápido</span>
+    <p class="screen-heading">¿Confiarías en Valentina como líder?</p>
+    <p class="screen-sub">Toma postura en 30 segundos. No lo pienses demasiado.</p>
+
+    <div class="timer-label">
+      <span>Tiempo</span>
+      <span id="timerCount">30 seg</span>
+    </div>
+    <div class="timer-wrap">
+      <div class="timer-fill" id="timerFill" style="width:100%"></div>
+    </div>
+
+    <div class="verdict-grid">
+      <button class="verdict-btn" onclick="vote('yes')">
+        <div class="v-icon">✅</div>
+        <div class="v-text">Sí, confiaría</div>
+        <div class="v-sub">La elegiría como líder</div>
+      </button>
+      <button class="verdict-btn" onclick="vote('no')">
+        <div class="v-icon">❌</div>
+        <div class="v-text">No confiaría</div>
+        <div class="v-sub">Genera desconfianza</div>
+      </button>
+    </div>
+
+    <div id="reasonBox" style="display:none;">
+      <p class="section-label">¿Por qué tomaste esa decisión?</p>
+      <textarea id="reasonText" rows="3" placeholder="Escribe tu razonamiento aquí..."></textarea>
+      <button class="btn btn-primary" onclick="goTo(2)" style="margin-top:10px;">Ver la verdad →</button>
+    </div>
+  </div>
+
+  <!-- PASO 3 -->
+  <div class="screen" id="s2">
+    <span class="badge badge-giro">Paso 3 · El giro</span>
+    <p class="screen-heading">Acabas de juzgar sin saber.</p>
+    <p class="screen-sub">Esto es lo que no te dijeron sobre cada publicación:</p>
+
+    <div class="reveal-list">
+      <div class="reveal-item">
+        <div class="ri-title">El tweet sobre los impuntuales</div>
+        <div class="ri-body">Lo escribió el día que un amigo llegó tarde mientras su papá estaba en urgencias. No era una postura de vida — era dolor.</div>
+      </div>
+      <div class="reveal-item">
+        <div class="ri-title">"No me importa lo que piensen"</div>
+        <div class="ri-body">Era una broma interna con su grupo de teatro. Alguien la reposteó con una leve edición que cambió el tono completamente.</div>
+      </div>
+      <div class="reveal-item">
+        <div class="ri-title">El comentario político de hace 3 años</div>
+        <div class="ri-body">Tenía 16 años, estaba en plena crisis familiar. Hoy lidera el grupo de derechos humanos de su facultad.</div>
+      </div>
+      <div class="reveal-item">
+        <div class="ri-title">Los likes a contenido "fuerte"</div>
+        <div class="ri-body">Le aparecieron por el algoritmo después de ver un documental sobre liderazgo. No los buscó activamente.</div>
+      </div>
+    </div>
+
+    <div class="reveal-hero">
+      <div class="rh-label">Valentina en la realidad</div>
+      <div class="rh-body">Delegada estudiantil por 2 años. Voluntaria en consultorio jurídico gratuito. Referente de su comunidad. Conocida por escuchar antes de hablar.</div>
+    </div>
+
+    <button class="btn btn-primary" onclick="goTo(3)">Ir al debate →</button>
+  </div>
+
+  <!-- PASO 4 -->
+  <div class="screen" id="s3">
+    <span class="badge badge-debate">Paso 4 · El debate</span>
+    <p class="screen-heading">Ahora sí: debatan.</p>
+    <p class="screen-sub">Dos preguntas que no tienen respuesta fácil.</p>
+
+    <div class="debate-q-card">
+      <div class="dq-eyebrow">Pregunta central</div>
+      <div class="dq-text">¿Es válido formar una opinión real sobre una persona basándose en su identidad digital?</div>
+      <div class="dq-bomb">
+        <strong>Segunda bomba:</strong> En la vida real tampoco tienes acceso a toda la historia de las personas. Solo ves lo que muestran. Entonces… ¿las redes distorsionan… o son más honestas porque no hay filtros sociales cara a cara?
+      </div>
+    </div>
+
+    <div class="sides-grid">
+      <div class="side-card favor">
+        <div class="side-title">A favor</div>
+        <ul>
+          <li>Lo que publicas es una decisión</li>
+          <li>Refleja tus valores e intereses</li>
+          <li>Es evidencia accesible</li>
+          <li>En persona también juzgamos con poca info</li>
+        </ul>
+      </div>
+      <div class="side-card contra">
+        <div class="side-title">En contra</div>
+        <ul>
+          <li>Todo puede estar fuera de contexto</li>
+          <li>Las personas cambian</li>
+          <li>No vemos intención ni emoción</li>
+          <li>La identidad digital nunca es completa</li>
+        </ul>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="alert('Conéctate a Claude para profundizar argumentos')">Profundizar argumentos →</button>
+    <button class="btn btn-ghost" onclick="goTo(0)" style="margin-top:6px;">↩ Reiniciar dinámica</button>
+  </div>
+
+</div>
+
+<script>
+  let timerInterval;
+  let timeLeft = 30;
+
+  function goTo(step) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('visible'));
+    document.getElementById('s' + step).classList.add('visible');
+    for (let i = 0; i < 4; i++) {
+      const d = document.getElementById('dot' + i);
+      d.classList.remove('active', 'done');
+      if (i < step) d.classList.add('done');
+      else if (i === step) d.classList.add('active');
+    }
+    if (step === 1) startTimer();
+    else clearInterval(timerInterval);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function startTimer() {
+    timeLeft = 30;
+    const fill = document.getElementById('timerFill');
+    const count = document.getElementById('timerCount');
+    fill.style.transition = 'none';
+    fill.style.width = '100%';
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      fill.style.transition = 'width 1s linear';
+      fill.style.width = (timeLeft / 30 * 100) + '%';
+      count.textContent = timeLeft + ' seg';
+      if (timeLeft <= 0) clearInterval(timerInterval);
+    }, 1000);
+  }
+
+  function vote(v) {
+    document.querySelectorAll('.verdict-btn').forEach(b => b.classList.remove('sel-yes','sel-no'));
+    document.querySelector('.verdict-btn:' + (v === 'yes' ? 'first-child' : 'last-child')).classList.add('sel-' + v);
+    document.getElementById('reasonBox').style.display = 'block';
+    document.getElementById('reasonBox').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+</script>
+</body>
+</html>
