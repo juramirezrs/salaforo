@@ -1,0 +1,477 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Special+Elite&family=Cinzel:wght@400;600&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .doc-wrapper {
+    background: #f5efe0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(139,90,43,0.04) 28px, rgba(139,90,43,0.04) 29px),
+      repeating-linear-gradient(90deg, transparent, transparent 48px, rgba(139,90,43,0.02) 48px, rgba(139,90,43,0.02) 49px);
+    min-height: 100vh;
+    padding: 2.5rem 1.5rem;
+    font-family: 'IM Fell English', serif;
+    color: #2a1a0e;
+    position: relative;
+  }
+
+  .doc-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 0% 0%, rgba(139,90,43,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 100% 100%, rgba(100,60,20,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(200,170,110,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .stamp-band {
+    text-align: center;
+    border-top: 3px double #8b4513;
+    border-bottom: 3px double #8b4513;
+    padding: 0.6rem 0;
+    margin-bottom: 0.5rem;
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: #6b3410;
+    text-transform: uppercase;
+  }
+
+  .clasificado {
+    display: inline-block;
+    border: 2.5px solid #8b1a1a;
+    color: #8b1a1a;
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 3px 18px;
+    transform: rotate(-2deg);
+    margin: 0.3rem auto;
+    display: block;
+    width: fit-content;
+    opacity: 0.85;
+  }
+
+  .header-block {
+    text-align: center;
+    margin: 1.5rem 0 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1.5px solid rgba(139,90,43,0.3);
+  }
+
+  .org-name {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: #6b3410;
+    margin-bottom: 0.5rem;
+  }
+
+  .doc-title {
+    font-family: 'IM Fell English', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1.2;
+    color: #1a0e06;
+    margin: 0.5rem 0;
+  }
+
+  .doc-subtitle {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: #5a3520;
+    margin-top: 0.4rem;
+  }
+
+  .meta-line {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #7a5030;
+    margin-top: 1rem;
+    border-top: 1px solid rgba(139,90,43,0.2);
+    padding-top: 0.5rem;
+  }
+
+  .section-header {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #6b3410;
+    margin: 2rem 0 1rem;
+    text-align: center;
+    position: relative;
+  }
+
+  .section-header::before,
+  .section-header::after {
+    content: '— ✦ —';
+    margin: 0 0.8rem;
+    font-size: 9px;
+  }
+
+  .comunicado {
+    border: 1.5px solid rgba(139,90,43,0.35);
+    padding: 1.2rem 1.5rem;
+    margin: 1rem 0;
+    background: rgba(255,248,230,0.6);
+    position: relative;
+  }
+
+  .comunicado::before {
+    content: '§';
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #f5efe0;
+    padding: 0 8px;
+    font-size: 18px;
+    color: rgba(139,90,43,0.5);
+  }
+
+  .comunicado p {
+    font-size: 0.95rem;
+    line-height: 1.9;
+    text-align: justify;
+    text-indent: 1.5rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .comunicado p:last-child { margin-bottom: 0; }
+
+  .articulo {
+    display: flex;
+    gap: 1rem;
+    margin: 0.8rem 0;
+    align-items: flex-start;
+    border-bottom: 1px dashed rgba(139,90,43,0.2);
+    padding-bottom: 0.8rem;
+  }
+
+  .art-num {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #8b4513;
+    min-width: 55px;
+    padding-top: 2px;
+    font-weight: 600;
+  }
+
+  .art-text {
+    font-size: 0.9rem;
+    line-height: 1.75;
+    flex: 1;
+  }
+
+  .divider-ornament {
+    text-align: center;
+    color: rgba(139,90,43,0.5);
+    font-size: 16px;
+    letter-spacing: 8px;
+    margin: 1.5rem 0;
+  }
+
+  .testimonios-header {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #6b3410;
+    margin: 2rem 0 0.5rem;
+    text-align: center;
+  }
+
+  .testimonio {
+    margin: 1.2rem 0;
+    padding: 1rem 1.2rem 1rem 1.5rem;
+    border-left: 3px solid rgba(139,90,43,0.4);
+    position: relative;
+    background: rgba(255,248,230,0.4);
+  }
+
+  .testimonio.disidente {
+    border-left-color: rgba(120,30,30,0.5);
+  }
+
+  .testimonio-id {
+    font-family: 'Special Elite', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: #8b4513;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+
+  .testimonio-texto {
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #2a1a0e;
+  }
+
+  .testimonio-nota {
+    font-size: 0.78rem;
+    color: #7a5030;
+    margin-top: 0.5rem;
+    font-style: normal;
+    padding-left: 0.5rem;
+    border-left: 1px solid rgba(139,90,43,0.2);
+  }
+
+  .filosof-block {
+    margin: 1.5rem 0;
+    padding: 1.2rem 1.5rem;
+    border: 1.5px solid rgba(139,90,43,0.25);
+    border-top: 3px solid rgba(139,90,43,0.5);
+    background: rgba(250,240,220,0.5);
+  }
+
+  .filosof-block .pregunta {
+    font-family: 'Cinzel', serif;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: #1a0e06;
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .filosof-block .cita {
+    font-style: italic;
+    font-size: 0.85rem;
+    line-height: 1.75;
+    color: #5a3520;
+    text-align: center;
+    border-top: 1px dashed rgba(139,90,43,0.3);
+    padding-top: 0.8rem;
+  }
+
+  .cita-autor {
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    color: #8b4513;
+    margin-top: 0.3rem;
+  }
+
+  .debate-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .debate-col {
+    padding: 1rem;
+    border: 1px solid rgba(139,90,43,0.3);
+    background: rgba(255,248,230,0.4);
+  }
+
+  .debate-col-title {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 0.7rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px dashed rgba(139,90,43,0.3);
+  }
+
+  .debate-col.a .debate-col-title { color: #1a5c1a; }
+  .debate-col.b .debate-col-title { color: #8b1a1a; }
+
+  .debate-col p {
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: #2a1a0e;
+  }
+
+  .firma-block {
+    margin-top: 2rem;
+    text-align: right;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(139,90,43,0.3);
+    font-family: 'Special Elite', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: #7a5030;
+  }
+
+  .sello {
+    display: inline-block;
+    border: 2px solid rgba(100,30,30,0.4);
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'Special Elite', monospace;
+    font-size: 7px;
+    letter-spacing: 1px;
+    color: rgba(100,30,30,0.5);
+    float: right;
+    margin-top: -20px;
+    line-height: 1.4;
+    padding: 8px;
+  }
+
+  .nota-pie {
+    margin-top: 2rem;
+    padding-top: 0.8rem;
+    border-top: 1.5px double rgba(139,90,43,0.3);
+    font-size: 0.75rem;
+    font-style: italic;
+    color: #7a5030;
+    text-align: center;
+    line-height: 1.7;
+  }
+
+  .fold-line {
+    border: none;
+    border-top: 1px dashed rgba(139,90,43,0.2);
+    margin: 1.8rem 0;
+  }
+
+  @media (max-width: 520px) {
+    .debate-columns { grid-template-columns: 1fr; }
+    .doc-title { font-size: 1.5rem; }
+  }
+</style>
+
+<div class="doc-wrapper">
+  <div class="page">
+
+    <div class="stamp-band">COMISIÓN INTERNACIONAL DE RECONCILIACIÓN · DOCUMENTO RESERVADO · REF/2025-ARK-VII</div>
+    <div class="clasificado">USO RESTRINGIDO</div>
+
+    <div class="header-block">
+      <div class="org-name">ASAMBLEA DE NACIONES UNIDAS — CONSEJO DE TRANSICIÓN</div>
+      <div class="doc-title">Paz sin Identidad</div>
+      <div class="doc-subtitle">Comunicado oficial sobre la Ley de Neutralidad Absoluta y sus consecuencias no previstas</div>
+      <div class="meta-line">
+        <span>FECHA: Año III del Acuerdo</span>
+        <span>CLASIFICACIÓN: Reservado</span>
+        <span>EXPEDIENTE: CNT-447</span>
+      </div>
+    </div>
+
+    <div class="section-header">I. Preámbulo del Acuerdo</div>
+
+    <div class="comunicado">
+      <p>Habiéndose alcanzado, tras décadas de conflicto en la región conocida históricamente bajo denominaciones en disputa, un estado de cese definitivo de hostilidades entre las partes beligerantes, esta Asamblea proclama la constitución del <strong>Estado Unificado</strong>, bajo el principio rector de que toda diferencia de identidad —religiosa, cultural, histórica— constituye una amenaza latente a la convivencia.</p>
+      <p>El presente documento establece los fundamentos jurídicos y filosóficos de la <em>Ley de Neutralidad Absoluta</em>, así como el registro de testimonios recabados durante el primer año de su implementación.</p>
+    </div>
+
+    <div class="section-header">II. Artículos de la Ley</div>
+
+    <div class="articulo">
+      <div class="art-num">ART. I</div>
+      <div class="art-text">Quedan prohibidos en espacios públicos y educativos todos los símbolos de filiación religiosa: cruces, hiyabs, kipás, estrellas, medias lunas y cualquier insignia de tradición particular.</div>
+    </div>
+    <div class="articulo">
+      <div class="art-num">ART. II</div>
+      <div class="art-text">Se suspenden los relatos históricos sobre el conflicto en toda institución oficial. La narrativa de los hechos pasados será reemplazada por un currículo de "historia compartida neutral".</div>
+    </div>
+    <div class="articulo">
+      <div class="art-num">ART. III</div>
+      <div class="art-text">Se eliminan las festividades de carácter identitario. Los días de conmemoración serán sustituidos por celebraciones cívicas del Estado Unificado.</div>
+    </div>
+    <div class="articulo">
+      <div class="art-num">ART. IV</div>
+      <div class="art-text">En las escuelas se impartirá únicamente la "Cultura Común", un compendio elaborado por la Comisión, que no reconocerá origen alguno ni tradición específica.</div>
+    </div>
+
+    <div class="comunicado" style="margin-top:1rem;">
+      <p>Argumento fundamental de la Comisión: <em>"Las diferencias son la raíz del conflicto. Erradicarlas es el único camino hacia la convivencia verdadera."</em></p>
+    </div>
+
+    <hr class="fold-line">
+
+    <div class="testimonios-header">— III. Testimonios recabados en campo — <br><span style="font-size:8px;letter-spacing:3px;font-family:'Special Elite',monospace;color:#8b4513;">ENTREVISTAS REALIZADAS POR OBSERVADORES INDEPENDIENTES · AÑO III DEL ACUERDO</span></div>
+
+    <div class="testimonio">
+      <div class="testimonio-id">Testimonio 01 · Residente, zona oeste · Origen palestino</div>
+      <div class="testimonio-texto">"Por primera vez en mi vida no tengo miedo de salir a la calle. Nadie me mira distinto. Nadie sabe quién soy... y ahí está el problema: yo tampoco sé quién soy cuando estoy afuera. La paz llegó, sí. Pero llegó vacía, como una casa sin muebles."</div>
+      <div class="testimonio-nota">El entrevistado firmó el acuerdo voluntariamente. Afirma sentirse "agradecido y extraviado" al mismo tiempo.</div>
+    </div>
+
+    <div class="testimonio disidente">
+      <div class="testimonio-id">Testimonio 02 · Residente, zona este · Origen israelí</div>
+      <div class="testimonio-texto">"Mis hijos crecen en paz, eso no tiene precio. Pero la semana pasada mi hijo me preguntó qué era el Sabbat. Se lo dije en voz baja, como si fuera un secreto. Y en ese momento entendí: les hemos dado un mundo sin heridas y también sin raíces. ¿Qué clase de árbol crece sin raíces?"</div>
+      <div class="testimonio-nota">El entrevistado cumple la ley en lo formal. En lo privado reconoce conservar sus prácticas "con discreción".</div>
+    </div>
+
+    <div class="testimonio">
+      <div class="testimonio-id">Testimonio 03 · Corresponsal internacional · Sin filiación regional</div>
+      <div class="testimonio-texto">"He cubierto conflictos en cuatro continentes. Nunca vi algo así: cero violencia registrada en doce meses consecutivos. Es un logro histórico. Y sin embargo, cuando camino por las calles del Estado Unificado, algo falta. No sé cómo describirlo. La gente sonríe, pero las sonrisas se parecen demasiado."</div>
+      <div class="testimonio-nota">Observadora veterana. Considera el acuerdo "un experimento sin precedentes cuyos resultados aún no podemos leer del todo".</div>
+    </div>
+
+    <div class="testimonio disidente">
+      <div class="testimonio-id">Testimonio 04 · Docente, escuela primaria estatal · Sin origen declarado</div>
+      <div class="testimonio-texto">"Los niños aprenden muy bien la Cultura Común. No discuten, no se pelean por banderas. Pero tampoco hacen preguntas. Antes los niños preguntaban todo: ¿por qué celebramos esto? ¿por qué mi abuela habla diferente? Ahora no preguntan nada. No sé si eso es paz o es otra cosa."</div>
+      <div class="testimonio-nota">La entrevistada apoya los objetivos de la ley pero expresa reservas sobre su implementación en aulas.</div>
+    </div>
+
+    <hr class="fold-line">
+
+    <div class="section-header">IV. El conflicto filosófico</div>
+
+    <div class="filosof-block">
+      <div class="pregunta">¿Es esto verdadera convivencia... o simplemente ausencia de conflicto?</div>
+      <div class="cita">"Hemos confundido la paz con el silencio. Y el silencio, cuando no es elegido, es una forma de violencia que no sangra."</div>
+      <div class="cita-autor">— Nota marginal de un miembro disidente de la Comisión. No firmó el documento final.</div>
+    </div>
+
+    <div class="debate-columns">
+      <div class="debate-col a">
+        <div class="debate-col-title">Postura: La unidad como condición de la paz</div>
+        <p>Si la identidad diferenciada fue el combustible de la guerra, su neutralización es el único acto racional. La diversidad, en este contexto específico, no es riqueza: es memoria de la herida. Construir juntos requiere, primero, dejar de ser distintos.</p>
+        <p style="margin-top:0.6rem;font-style:italic;font-size:0.78rem;color:#3a5c3a;">«El yo que divide no puede construir el nosotros que une.»</p>
+      </div>
+      <div class="debate-col b">
+        <div class="debate-col-title">Postura: La identidad como condición de la dignidad</div>
+        <p>Una paz que exige borrarse a uno mismo no es paz: es rendición. La convivencia genuina no requiere identidades idénticas, sino el reconocimiento mutuo de identidades distintas. Obligar al olvido no cierra heridas; las entierra vivas.</p>
+        <p style="margin-top:0.6rem;font-style:italic;font-size:0.78rem;color:#8b1a1a;">«Solo puede convivir libremente quien es libre de ser.»</p>
+      </div>
+    </div>
+
+    <div class="filosof-block" style="margin-top:1.2rem;">
+      <div class="pregunta" style="font-size:0.95rem;">La pregunta central del debate</div>
+      <div class="cita" style="font-size:0.95rem;font-style:normal;color:#1a0e06;">La diversidad como armonía: ¿podemos convivir sin buscar ser iguales?<br><br>
+      <span style="font-style:italic;font-size:0.85rem;color:#5a3520;">¿O necesitamos ser iguales para dejar de hacernos daño?</span>
+      </div>
+    </div>
+
+    <hr class="fold-line">
+
+    <div class="nota-pie">
+      Este documento es un ejercicio filosófico de naturaleza ficticia, elaborado con fines reflexivos y de debate.<br>
+      Los testimonios son construcciones de pensamiento, no declaraciones de personas reales.<br>
+      Su propósito es abrir preguntas, no responderlas.
+    </div>
+
+    <div class="firma-block">
+      <div class="sello">COMISIÓN<br>TRANSICIÓN<br>⊕<br>RESERVADO</div>
+      <div>EMITIDO POR: OFICINA DE DOCUMENTACIÓN FILOSÓFICA<br>
+      EXPEDIENTE ABIERTO · SIN RESOLUCIÓN DEFINITIVA</div>
+    </div>
+
+  </div>
+</div>
